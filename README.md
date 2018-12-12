@@ -4,14 +4,14 @@
 
 ## Table of contents
 
-- [:clipboard: Project Structure](https://github.com/jonathanschlue/tracemap-monitoring#project-structure-clipboard)
-- [:construction: Setup](https://github.com/jonathanschlue/tracemap-monitoring#setup-construction)
-- [:hammer: Deployment](https://github.com/jonathanschlue/tracemap-monitoring#deployment-hammer)
-- [:fist: Adding a new Beat](https://github.com/jonathanschlue/tracemap-monitoring#adding-a-new-beat-fist)
-- [:chart_with_upwards_trend: Spooling arbitrary JSON logs into the system](https://github.com/jonathanschlue/tracemap-monitoring#spooling-arbitrary-json-logs-into-the-system-chart_with_upwards_trend)
-- [:link: Further Readings](https://github.com/jonathanschlue/tracemap-monitoring#further-readings-link)
-- [:crystal_ball: Dashboards Online](https://github.com/jonathanschlue/tracemap-monitoring#dashboards-online-crystal_ball)
-- [:heavy_check_mark: Basic Health Checks (no dashboards)](https://github.com/jonathanschlue/tracemap-monitoring#basic-health-checks-no-dashboards-heavy_check_mark)
+- [:clipboard: Project Structure](https://github.com/tracemap/tracemap-monitoring#project-structure-clipboard)
+- [:construction: Setup](https://github.com/tracemap/tracemap-monitoring#setup-construction)
+- [:hammer: Deployment](https://github.com/tracemap/tracemap-monitoring#deployment-hammer)
+- [:fist: Adding a new Beat](https://github.com/tracemap/tracemap-monitoring#adding-a-new-beat-fist)
+- [:chart_with_upwards_trend: Spooling arbitrary JSON logs into the system](https://github.com/tracemap/tracemap-monitoring#spooling-arbitrary-json-logs-into-the-system-chart_with_upwards_trend)
+- [:link: Further Readings](https://github.com/tracemap/tracemap-monitoring#further-readings-link)
+- [:crystal_ball: Dashboards Online](https://github.com/tracemap/tracemap-monitoring#dashboards-online-crystal_ball)
+- [:heavy_check_mark: Basic Health Checks (no dashboards)](https://github.com/tracemap/tracemap-monitoring#basic-health-checks-no-dashboards-heavy_check_mark)
 
 ## Project Structure :clipboard:
 
