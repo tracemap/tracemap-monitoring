@@ -1,0 +1,6 @@
+*.swp
+logs/*
+!*.gitkeep
+docker-compose.yml
+.env
+raspi.iso

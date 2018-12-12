@@ -1,0 +1,47 @@
+packetbeat.interfaces.device: any
+
+packetbeat.flows:
+  timeout: 30s
+  period: 5s
+
+packetbeat.protocols.dns:
+  ports: [53]
+  include_authorities: true
+  include_additionals: true
+
+packetbeat.protocols.http:
+  ports: [80, 433, 3000, 5000, 5100]
+
+#packetbeat.protocols.memcache:
+#  ports: [11211]
+#
+#packetbeat.protocols.mysql:
+#  ports: [3306]
+#
+#packetbeat.protocols.pgsql:
+#  ports: [5432]
+#
+#packetbeat.protocols.redis:
+#  ports: [6379]
+#
+#packetbeat.protocols.thrift:
+#  ports: [9090]
+#
+#packetbeat.protocols.mongodb:
+#  ports: [27017]
+#
+#packetbeat.protocols.cassandra:
+#  ports: [9042]
+
+
+processors:
+- add_cloud_metadata:
+
+output.elasticsearch:
+  hosts: ['localhost:9200']
+  #username: elastic
+  #password: changeme
+ 
+setup.kibana.host: "http://localhost:5601"
+setup.dashboards.enabled: true
+

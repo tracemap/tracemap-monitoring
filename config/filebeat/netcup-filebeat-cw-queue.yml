@@ -1,0 +1,35 @@
+filebeat.config:
+  prospectors:
+    path: ${path.config}/prospectors.d/*.yml
+    reload.enabled: false
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+processors:
+  - add_cloud_metadata:
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  index: "filebeat-cw-queue-%{[beat.version]}-%{+yyyy.MM.dd}"
+  # username: elastic
+  # password: changeme
+
+setup.kibana.host: "kibana:5601"
+setup.dashboards.enabled: false
+
+setup.template.json.enabled: true 
+setup.template.json.name: "filebeat-cw-queue"
+setup.template.json.path: "filebeat-cw-queue-template.json"
+
+setup.template.name: "filebeat-cw-queue"
+setup.template.pattern: "filebeat-cw-queue-*"
+setup.template.overwrite: true
+
+filebeat.inputs:
+  - type: log
+    paths:
+      - /logs/crawler-writer-queue.jsonl
+    json.keys_under_root: true
+    json.add_error_key: true
+    json.overwrite_keys: true

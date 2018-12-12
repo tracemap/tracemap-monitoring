@@ -1,0 +1,32 @@
+filebeat.config:
+  prospectors:
+    path: ${path.config}/prospectors.d/*.yml
+    reload.enabled: false
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+processors:
+- add_cloud_metadata:
+
+output.elasticsearch:
+  hosts: ['elasticsearch:9200']
+  index: "filebeat-nginx-%{[beat.version]}-%{+yyyy.MM.dd}"
+ # username: elastic
+ # password: changeme
+
+setup.kibana.host: "kibana:5601"
+setup.dashboards.enabled: true
+setup.template.name: "filebeat-nginx"
+setup.template.pattern: "filebeat-nginx-*"
+
+filebeat.modules:
+
+- module: nginx
+  enabled: true
+  access:
+    enabled: true
+    var.paths: ["/nginx/access.log*"]
+  error:
+    enabled: true
+    var.paths: ["/nginx/error.log*"]

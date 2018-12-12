@@ -1,0 +1,138 @@
+version: "3.5"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    container_name: elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearchdata:/usr/share/elasticsearch/data
+      - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./config/elasticsearch/jvm.options:/usr/share/elasticsearch/config/jvm.options
+      - ./config/elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+    ports:
+      - 127.0.0.1:9200:9200
+      - 127.0.0.1:9300:9300
+    networks:
+      - elknet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.4.2
+    container_name: kibana
+    volumes:
+      - kibanadata:/usr/share/kibana/data
+      - ./config/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 127.0.0.1:5601:5601
+    networks:
+      - elknet
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.4.2
+    container_name: logstash
+    volumes:
+      - logstashdata:/usr/share/logstash/data
+      - ./config/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+    networks:
+      - elknet
+
+  netcup-metricbeat-system:
+    image: docker.elastic.co/beats/metricbeat:6.4.2
+    container_name: netcup-metricbeat-system
+    environment:
+      - system.hostfs=/hostfs
+      - SYSTEM_HOSTFS=/hostfs
+    volumes:
+      - ./config/metricbeat/netcup-metricbeat-system.yml:/usr/share/metricbeat/metricbeat.yml
+      - type: bind
+        source: /proc
+        target: /hostfs/proc
+        read_only: true
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /hostfs/sys/fs/cgroup
+        read_only: true
+      - type: bind
+        source: /
+        target: /hostfs
+        read_only: true
+    networks:
+      - elknet
+
+  netcup-packetbeat:
+    image: docker.elastic.co/beats/packetbeat:6.4.2
+    container_name: netcup-packetbeat
+    volumes:
+      - ./config/packetbeat/netcup-packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
+    cap_add:
+      - NET_ADMIN
+    network_mode: "host"
+
+  netcup-filebeat-nginx:
+    image: docker.elastic.co/beats/filebeat:6.4.2
+    container_name: netcup-filebeat-nginx
+    volumes:
+      - ./config/filebeat/netcup-filebeat-nginx.yml:/usr/share/filebeat/filebeat.yml
+      - type: bind
+        source: /var/log/nginx
+        target: /nginx
+        read_only: true
+    networks:
+      - elknet
+
+  netcup-filebeat-cw-queue:
+    image: docker.elastic.co/beats/filebeat:6.4.2
+    container_name: netcup-filebeat-cw-queue
+    volumes:
+      - ./config/filebeat/netcup-filebeat-cw-queue.yml:/usr/share/filebeat/filebeat.yml
+      - ./templates/filebeat-cw-queue-template.json:/usr/share/filebeat/filebeat-cw-queue-template.json
+      - type: bind
+        source: /usr/local/bin/tracemap/tracemap-monitoring/logs/
+        target: /logs
+        read_only: true
+    networks:
+      - elknet
+      
+  netcup-filebeat-tm-gen:
+    image: docker.elastic.co/beats/filebeat:6.4.2
+    container_name: netcup-filebeat-tm-gen
+    volumes:
+      - ./config/filebeat/netcup-filebeat-tm-gen.yml:/usr/share/filebeat/filebeat.yml
+      - ./templates/filebeat-tm-gen-template.json:/usr/share/filebeat/filebeat-tm-gen-template.json
+      - type: bind
+        source: /usr/local/bin/tracemap/tracemap-backend/logs/
+        target: /logs
+        read_only: true
+    networks:
+      - elknet
+
+  netcup-heartbeat:
+    image: docker.elastic.co/beats/heartbeat:6.4.2
+    container_name: netcup-heartbeat
+    volumes:
+      - ./config/heartbeat/netcup-heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    networks:
+      - elknet
+
+  netcup-apm-server:
+    image: docker.elastic.co/apm/apm-server:6.4.2
+    container_name: netcup-apm-server
+    volumes:
+      - ./config/apm-server/netcup-apm-server-api.yml:/usr/share/apm-server/apm-server.yml
+    ports:
+      - 127.0.0.1:8200:8200
+    networks:
+      - elknet
+
+volumes:
+  elasticsearchdata:
+    driver: local
+  kibanadata:
+    driver: local
+  logstashdata:
+    driver: local
+
+networks:
+  elknet:

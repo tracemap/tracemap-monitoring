@@ -1,0 +1,27 @@
+{
+    "index_patterns": ["filebeat-cw-queue-*"],
+    "settings": {
+      "number_of_shards": 1
+    },
+    "mappings": {
+      "doc": {
+        "_source": {
+          "enabled": true
+        },
+        "properties": {
+            "service": {
+                "type": "keyword"
+            },
+            "num_files": {
+                "type": "integer"
+            },
+            "num_user_ids": {
+                "type": "integer"
+            },
+            "datetime": {
+                "type": "date"
+            }
+        }
+      }
+    }
+  }

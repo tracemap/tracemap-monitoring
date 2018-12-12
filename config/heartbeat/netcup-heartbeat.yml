@@ -1,0 +1,76 @@
+heartbeat.monitors:
+
+- type: http
+  schedule: '@every 5s'
+  urls:
+    - https://tracemap.info:443
+    - https://twitter.tracemap.info:443
+    - https://api.tracemap.info/status
+  check.response.status: 200
+  check.request.method: HEAD
+
+- type: http
+  schedule: '@every 5s'
+  urls:
+    - http://twitter.tracemap.info:80
+  check.response.status: 301
+  check.request.method: HEAD
+
+# - type: http
+#   schedule: '@every 5s'
+#   urls:
+#     - https://18.216.50.171:7473
+#   check.response.status: 200
+#   check.request.method: HEAD
+
+- type: http
+  schedule: '@every 5s'
+  urls:
+    - https://tool.tracemap.info:443
+  check.response.status: 401
+  check.request.method: HEAD
+
+- type: http
+  schedule: '@every 5s'
+  urls:
+    - http://tool.tracemap.info:80
+  check.response.status: 301
+  check.request.method: HEAD
+
+
+- type: tcp
+  schedule: '@every 5s'
+  hosts: 
+    - tool.tracemap.info
+    - tracemap.info
+    - twitter.tracemap.info
+  ports: [80, 443]
+
+
+- type: tcp
+  schedule: '@every 5s'
+  hosts:
+    - 18.216.50.171
+  ports: [7473]
+
+
+- type: icmp
+  schedule: '@every 5s'
+  hosts:
+    - api.tracemap.info
+    - tool.tracemap.info
+    - tracemap.info
+    - twitter.tracemap.info
+
+processors:
+- add_cloud_metadata:
+
+output.elasticsearch:
+  hosts: ['elasticsearch:9200']
+#  username: elastic
+#  password: changeme
+
+setup.kibana:
+  host: "kibana:5601"
+
+setup.dashboards.enabled: true

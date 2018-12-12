@@ -1,0 +1,43 @@
+{
+  "index_patterns": ["filebeat-tm-gen-*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "_source": {
+        "enabled": true
+      },
+      "properties": {
+        "tweet_id_str": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "count": {
+          "type": "integer"
+        },
+        "retweet_count": {
+          "type": "integer"
+        },
+        "loading_time_sec": {
+          "type": "integer"
+        },
+        "email": {
+          "type": "keyword",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "datetime": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
